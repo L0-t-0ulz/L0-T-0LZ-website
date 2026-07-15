@@ -57,10 +57,56 @@
   }
 }
 
+/* --- F7 holographic depth: CRT overlay + tilt parallax --- */
+.holo-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 41;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.016) 0 1px,
+    transparent 1px 3px
+  );
+  mix-blend-mode: overlay;
+}
+.holo-overlay__flicker {
+  position: absolute;
+  inset: 0;
+  background: rgba(125, 249, 255, 0.02);
+  opacity: 0;
+  animation: holo-flicker 8s steps(1) infinite;
+}
+@keyframes holo-flicker {
+  0%,
+  95%,
+  100% {
+    opacity: 0;
+  }
+  96% {
+    opacity: 1;
+  }
+  97% {
+    opacity: 0.2;
+  }
+  98% {
+    opacity: 0.7;
+  }
+}
+/* Tilt-parallax layers need a perspective on the hero. */
+.hero {
+  perspective: 1200px;
+}
+[data-tilt-layer] {
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .warp-fx,
   .warp-fx__scan,
-  .section.scan-in::before {
+  .section.scan-in::before,
+  .holo-overlay__flicker {
     display: none;
     animation: none;
   }

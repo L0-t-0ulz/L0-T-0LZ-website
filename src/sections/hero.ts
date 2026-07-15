@@ -11,7 +11,7 @@ export function buildHero(): HTMLElement {
       <div class="hero__canvas" aria-hidden="true"></div>
       <div class="hero__fallback" aria-hidden="true"></div>
 
-      <div class="hero__inner">
+      <div class="hero__inner" data-tilt-layer="1">
         <p class="hero__tag reveal">${hero.tag}</p>
         <h1 class="hero__title reveal">
           <span class="text-grad">${hero.titleLines[0]}</span><br />
@@ -28,8 +28,8 @@ export function buildHero(): HTMLElement {
         </div>
       </div>
 
-      <div class="hero__readout hero__readout--bl mono">${readout(hero.readoutLeft)}</div>
-      <div class="hero__readout hero__readout--br mono">${readout(hero.readoutRight)}</div>
+      <div class="hero__readout hero__readout--bl mono" data-tilt-layer="1.8">${readout(hero.readoutLeft)}</div>
+      <div class="hero__readout hero__readout--br mono" data-tilt-layer="1.8">${readout(hero.readoutRight)}</div>
 
       <div class="hero__scrollcue" aria-hidden="true">
         <span>▾</span> Scroll
