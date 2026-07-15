@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#05070d" />
+
+    <title>LO$T$0LZ — Forging the future of fashion, in 3D</title>
+    <meta
+      name="description"
+      content="LO$T$0LZ builds next-generation design software — garments engineered in true 3D, dressed in real fabrics with live cloth physics, from first sketch to factory-ready pattern. Flagship: DesignIO."
+    />
+    <meta name="author" content="Zayan Khan" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="LO$T$0LZ — Forging the future of fashion, in 3D" />
+    <meta
+      property="og:description"
+      content="Next-generation 3D fashion-design software. Garments engineered in true 3D, dressed in real fabrics with live cloth physics — first sketch to factory-ready pattern."
+    />
+    <meta property="og:image" content="/og-banner.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="LO$T$0LZ — Forging the future of fashion, in 3D" />
+    <meta
+      name="twitter:description"
+      content="Next-generation 3D fashion-design software. Flagship: DesignIO."
+    />
+    <meta name="twitter:image" content="/og-banner.jpg" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "L0$T$0LZ",
+        "alternateName": "L0-t-0ulz",
+        "url": "https://l0-t-0ulz.github.io/L0-T-0LZ-website/",
+        "email": "khanzayan_123@hotmail.com",
+        "founder": { "@type": "Person", "name": "Zayan Khan" },
+        "sameAs": ["https://github.com/L0-t-0ulz"],
+        "description": "Next-generation 3D fashion-design software. Garments engineered in true 3D with live cloth physics, from first sketch to factory-ready pattern."
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#designio">Skip to content</a>
+
+    <!-- Fixed HUD chrome overlay (crop-marks + grid) -->
+    <div class="hud-frame" aria-hidden="true">
+      <span class="crop crop--tl"></span>
+      <span class="crop crop--tr"></span>
+      <span class="crop crop--bl"></span>
+      <span class="crop crop--br"></span>
+      <div class="hud-grid"></div>
+    </div>
+
+    <!-- Custom crosshair cursor (JS-driven) -->
+    <div class="cursor" aria-hidden="true"><span class="cursor__reticle"></span></div>
+
+    <div id="app"></div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,62 @@
+/* ============================================================
+   Design tokens — LO$T$0LZ
+   ============================================================ */
+:root {
+  /* --- Surface --- */
+  --bg: #05070d;
+  --bg-elev: #0a0e18;
+  --bg-panel: #0c1320;
+
+  /* --- Brand blues / accents --- */
+  --blue: #3aa0ff;
+  --blue-bright: #6cc5ff;
+  --cyan: #7df9ff;
+  --magenta: #b46cff;
+
+  /* --- Text --- */
+  --white: #eaf6ff;
+  --text: #a7b6cc;
+  --text-dim: #5c6b82;
+
+  /* --- Lines & glass --- */
+  --line: rgba(108, 197, 255, 0.14);
+  --line-strong: rgba(108, 197, 255, 0.32);
+  --glass: rgba(10, 16, 26, 0.55);
+  --glass-border: rgba(108, 197, 255, 0.22);
+
+  /* --- Glows --- */
+  --glow-blue: 0 0 24px rgba(58, 160, 255, 0.55);
+  --glow-blue-soft: 0 0 40px rgba(58, 160, 255, 0.28);
+  --glow-magenta: 0 0 40px rgba(180, 108, 255, 0.35);
+  --glow-cyan: 0 0 18px rgba(125, 249, 255, 0.5);
+
+  /* --- Type --- */
+  --font-display: 'Chakra Petch', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+
+  /* Fluid scale */
+  --fs-display: clamp(3rem, 9vw, 8rem);
+  --fs-h1: clamp(2.6rem, 6vw, 5rem);
+  --fs-h2: clamp(2rem, 4vw, 3.4rem);
+  --fs-h3: clamp(1.35rem, 2.4vw, 2rem);
+  --fs-lead: clamp(1.15rem, 2vw, 1.6rem);
+  --fs-body: 1.0625rem;
+  --fs-label: 0.72rem;
+
+  /* --- Layout --- */
+  --maxw: 1280px;
+  --gutter: clamp(1.25rem, 4vw, 4rem);
+  --section-y: clamp(6rem, 14vh, 12rem);
+  --radius: 14px;
+  --radius-sm: 8px;
+
+  /* --- Motion --- */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* --- z-index --- */
+  --z-hud: 40;
+  --z-nav: 50;
+  --z-cursor: 100;
+}
