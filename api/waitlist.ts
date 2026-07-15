@@ -1,19 +1,15 @@
 /* ============================================================
    T04 — Waitlist API (Vercel Serverless Function).
-   Stores signups in Upstash Redis (Vercel KV) via the REST API,
-   returns a real queue position. No store configured yet → it
-   returns position:null (honest: "on the list", no fake number).
-
-   Zero npm deps: talks to the Upstash REST endpoint with fetch,
-   and accepts either the Vercel-KV or Upstash env-var names.
+   Stores signups in Redis (Vercel Marketplace "Redis" DB) via
+   node-redis over the injected REDIS_URL, and returns a real
+   queue position. No store configured → position:null (honest:
+   "on the list", never a fake number).
    ============================================================ */
+import { createClient } from 'redis';
 
 // `process` is provided by the Vercel Node runtime; declare it so this file
 // typechecks standalone without pulling in @types/node.
 declare const process: { env: Record<string, string | undefined> };
-
-const REST_URL = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL || '';
-const REST_TOKEN = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN || '';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -28,15 +24,20 @@ interface Res {
   setHeader: (key: string, value: string) => void;
 }
 
-async function redis(cmd: (string | number)[]): Promise<unknown> {
-  const r = await fetch(REST_URL, {
-    method: 'POST',
-    headers: { Authorization: `Bearer ${REST_TOKEN}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify(cmd),
-  });
-  if (!r.ok) throw new Error(`redis ${r.status}`);
-  const j = (await r.json()) as { result?: unknown };
-  return j.result;
+// Module-scoped client, reused across warm invocations.
+let client: ReturnType<typeof createClient> | null = null;
+
+async function getClient(): Promise<ReturnType<typeof createClient> | null> {
+  const url = process.env.REDIS_URL;
+  if (!url) return null;
+  if (!client) {
+    client = createClient({ url, socket: { connectTimeout: 5000 } });
+    client.on('error', () => {
+      /* handled per-call; don't crash on transient socket errors */
+    });
+  }
+  if (!client.isOpen) await client.connect();
+  return client;
 }
 
 export default async function handler(req: Req, res: Res): Promise<void> {
@@ -64,23 +65,30 @@ export default async function handler(req: Req, res: Res): Promise<void> {
     return;
   }
 
-  // Not provisioned yet — accept but never invent a position.
-  if (!REST_URL || !REST_TOKEN) {
+  let db: ReturnType<typeof createClient> | null = null;
+  try {
+    db = await getClient();
+  } catch {
+    db = null;
+  }
+
+  // Store not reachable/configured — accept but never invent a position.
+  if (!db) {
     res.status(200).json({ ok: true, position: null, note: 'store_pending' });
     return;
   }
 
   try {
-    const added = await redis(['SADD', 'waitlist:emails', email]); // 1 = new, 0 = existing
+    const added = await db.sAdd('waitlist:emails', email); // 1 = new, 0 = existing
     let position: number;
     if (added === 1) {
-      position = Number(await redis(['INCR', 'waitlist:count']));
-      await redis(['HSET', 'waitlist:positions', email, String(position)]);
+      position = await db.incr('waitlist:count');
+      await db.hSet('waitlist:positions', email, String(position));
     } else {
-      const stored = await redis(['HGET', 'waitlist:positions', email]);
-      position = stored ? Number(stored) : Number(await redis(['GET', 'waitlist:count']));
+      const stored = await db.hGet('waitlist:positions', email);
+      position = stored ? Number(stored) : Number(await db.get('waitlist:count'));
     }
-    const total = Number(await redis(['GET', 'waitlist:count'])) || position;
+    const total = Number(await db.get('waitlist:count')) || position;
     res.status(200).json({ ok: true, position, total, returning: added !== 1 });
   } catch {
     res.status(500).json({ error: 'store_error' });
