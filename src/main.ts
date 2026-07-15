@@ -21,6 +21,7 @@ import './styles/arg.css';
 import { capabilities } from './core/capabilities';
 import { initScroll, ScrollTrigger } from './core/scroll';
 import { initCursor, initMagnetic } from './core/cursor';
+import { initCursorTrail } from './core/cursor-trail';
 import { revealAll } from './core/reveal';
 import { initAudio } from './core/audio';
 import { initBurst } from './core/burst';
@@ -68,6 +69,7 @@ app.append(main, buildFooter());
 // --- Motion / scroll / cursor ---
 initScroll();
 initCursor();
+initCursorTrail(); // F2 — comet trail
 initMagnetic();
 revealAll('.reveal');
 

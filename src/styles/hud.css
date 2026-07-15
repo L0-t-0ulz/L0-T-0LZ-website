@@ -105,6 +105,63 @@
   margin: -23px 0 0 -23px;
   background: rgba(58, 160, 255, 0.12);
 }
+/* F2 — target-lock bracket (4 corners) shown over interactive targets */
+.cursor__lock {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 44px;
+  height: 44px;
+  margin: -22px 0 0 -22px;
+  --c: var(--blue-bright);
+  background:
+    linear-gradient(var(--c) 0 0) top left / 10px 1.5px no-repeat,
+    linear-gradient(var(--c) 0 0) top left / 1.5px 10px no-repeat,
+    linear-gradient(var(--c) 0 0) top right / 10px 1.5px no-repeat,
+    linear-gradient(var(--c) 0 0) top right / 1.5px 10px no-repeat,
+    linear-gradient(var(--c) 0 0) bottom left / 10px 1.5px no-repeat,
+    linear-gradient(var(--c) 0 0) bottom left / 1.5px 10px no-repeat,
+    linear-gradient(var(--c) 0 0) bottom right / 10px 1.5px no-repeat,
+    linear-gradient(var(--c) 0 0) bottom right / 1.5px 10px no-repeat;
+  opacity: 0;
+  transform: scale(0.6);
+  transition:
+    opacity 0.25s var(--ease-out),
+    transform 0.25s var(--ease-out);
+}
+.cursor.is-active .cursor__lock {
+  opacity: 1;
+  animation: cursor-spin 4s linear infinite;
+}
+@keyframes cursor-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.cursor__tag {
+  position: absolute;
+  top: 27px;
+  left: 0;
+  transform: translateX(-50%);
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.24em;
+  color: var(--blue-bright);
+  opacity: 0;
+  transition: opacity 0.25s var(--ease-out);
+}
+.cursor.is-active .cursor__tag {
+  opacity: 0.9;
+}
+
+/* F2 — comet trail canvas */
+.cursor-trail {
+  position: fixed;
+  inset: 0;
+  z-index: 99;
+  pointer-events: none;
+}
+
 body.cursor-ready {
   cursor: none;
 }
