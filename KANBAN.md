@@ -1,79 +1,73 @@
-# 🧠 LO$T$0LZ — Engagement Kanban
+# 🧠 LO$T$0LZ — Engagement Kanban · "out-engineer the Valley"
 
-**Goal:** turn the site into an *experience people replay and share* — through satisfying feedback loops, novelty, discovery, and reward. Make visitors want to move the mouse, scroll again, and show a friend.
+**Mission:** make lostsoulz.vercel.app an *experience people replay, screenshot, and send to a friend.* Every pixel should reward attention. 30 concrete todos below — each one specific enough to start today.
 
-**Guardrails (non-negotiable):** stay 60fps, respect `prefers-reduced-motion` (offer a calm variant, never break it), keep it honest (no fake scarcity / deceptive dark patterns), and always mute-able. Delight > manipulation.
-
----
+**Guardrails (never break):** 60fps or it doesn't ship · respect `prefers-reduced-motion` with a real *calm* variant (not just "off") · audio **off by default**, one-tap mute always visible · social proof must be **real** (no faked counters) · delight over manipulation.
 
 ### Legend
-- **Impact:** 🔥 high · ⚡ medium · ◽ low
-- **Effort:** `S` small · `M` medium · `L` large
-- **Mechanic (the dopamine lever):** `Feedback` `Novelty` `Reward` `Progress` `Discovery` `FOMO` `Play`
+**Impact** 🔥 high · ⚡ med · ◽ low   |   **Effort** `S`/`M`/`L`   |   **Lever** `Feedback` `Reward` `Progress` `Play` `Novelty` `Discovery` `FOMO` `Social`
 
 ---
 
-## 🟩 Done — already pulling weight
-- **Cursor-tracking eyes** that follow you + periodic blink + bloom — the "it's alive / it noticed me" hook. `Feedback`
-- **Counter-scrolling marquees** (formats + pipeline) — constant motion keeps the eye moving. `Novelty`
-- **Magnetic buttons + custom crosshair cursor** — every hover feels physical. `Feedback`
-- **Smooth Lenis scroll + blur-in reveals** — buttery, "expensive" feel. `Feedback`
-- **Rotating DesignIO garment** (wireframe→shaded on scroll) — reward for scrolling. `Reward`
-- **Count-up stats (50+, 35)** — numbers ticking = tiny hit of progress. `Progress`
-
----
-
-## 🟨 Next Up — highest ROI, build these first
-- **Sound design + mute toggle** — subtle UI blips on hover/click, a low ambient hum, an eye "whoosh." Audio is the single biggest immersion multiplier. Off by default with an obvious 🔊 toggle (respect autoplay rules). `🔥` `M` `Feedback`
-- **Click & hover micro-bursts + haptics** — tiny particle burst / ripple on click, `navigator.vibrate` on mobile. Instant tactile payoff on every interaction. `🔥` `S` `Feedback`
-- **Draggable / dressable 3D garment** — let people grab and spin the DesignIO gown (and swap fabric/color). Play = time-on-site + "I made that." `🔥` `L` `Play`
-- **Live waitlist with position counter** — "You're #1,248 in line for DesignIO." Real number, real email capture. Reward + gentle FOMO + a reason to return. `🔥` `M` `FOMO`
-- **Boot / "system online" intro** — a 1.5s HUD power-up sequence on first load (scanlines, "OPTICS CALIBRATED", eyes flicker awake). Anticipation → payoff. Skippable, once per session. `⚡` `M` `Reward`
-
----
+## 🟩 Done — already hooking
+- Cursor-tracking eyes + blink + bloom · counter-scrolling marquees · magnetic buttons · custom crosshair cursor · Lenis smooth scroll + blur reveals · scroll-scrubbed rotating garment · count-up stats.
 
 ## 🟧 In Progress
-_(empty — pull from Next Up)_
+_(pull from Next Up →)_
 
 ---
 
-## 🟦 Backlog — idea pool
-### Discovery / secrets (high shareability)
-- **Konami-code / triple-click the eyes** unlocks a hidden scene (eyes go red, "INTRUDER DETECTED", a secret garment). Screenshot-bait. `⚡` `M` `Discovery`
-- **Hidden easter eggs** — click the logo 5×, hover the tagline, type "lost" — each does something small and delightful. `◽` `M` `Discovery`
-- **Micro-copy rewards** — occasional "Nice.", "You found it.", "Keep going." on interaction. `◽` `S` `Reward`
+## 🟨 Next Up — Sprint 1 (audio + touch + a reason to stay)
+- [ ] **T01 · Web Audio UI sound engine** — new `src/core/audio.ts`: a tiny synth (OscillatorNode + gain envelope) for hover blip, click tick, eye "whoosh," success chime. Master `GainNode`, `mute` persisted to `localStorage`, unlock on first pointerdown (autoplay policy). Wire into `cursor.ts` + buttons. `🔥` `M` `Feedback`
+- [ ] **T02 · Click micro-burst + haptics** — on pointerdown, spawn a short-lived Three.js `InstancedMesh` spark burst at the cursor (reuse the hero renderer / a lightweight overlay canvas) + `navigator.vibrate(8)` on touch. Every tap pays out. `🔥` `S` `Feedback`
+- [ ] **T03 · Boot / "OPTICS ONLINE" intro** — first-load HUD power-up (~1.6s): scanline wipe, mono readout "CALIBRATING OPTICS… ONLINE", eyes flicker awake, then content fades in. Skippable, once per session via `sessionStorage`. `⚡` `M` `Reward`
+- [ ] **T04 · Live waitlist + queue position** — email field → Vercel KV counter → "You're **#1,248** in line for DesignIO." Serverless route in `api/waitlist.ts`. Confetti on submit. Real number, real capture. `🔥` `M` `FOMO`
+- [ ] **T05 · Scroll-progress scan-line** — fixed side rail with a cyan fill + `%` readout + a tick that "locks" as each section passes (IntersectionObserver). Progress you can feel. `⚡` `S` `Progress`
+- [ ] **T06 · "Explored 100%" achievement + confetti** — reaching the footer fires a toast + particle burst; persists to `localStorage` so it only celebrates once. `⚡` `S` `Reward`
+
+---
+
+## 🟦 Backlog
 
 ### Feedback / juice
-- **Cursor trail** — faint cyan particle wake following the crosshair. `⚡` `S` `Feedback`
-- **Section "scan" transitions** — a glitch/scanline sweep as each section enters. `⚡` `M` `Novelty`
-- **CTA confetti/spark burst** on "Get in touch" / waitlist submit. `⚡` `S` `Reward`
-- **Button press physics** — springy squash/scale on click. `◽` `S` `Feedback`
+- [ ] **T07 · Cursor comet trail** — additive fading particle wake behind the crosshair (WebGL points or 2D canvas), throttled to rAF. `⚡` `S` `Feedback`
+- [ ] **T08 · Magnetic everything** — extend `data-magnetic` to nav links, chips, and cards with springy GSAP `quickTo` return + subtle scale. `⚡` `S` `Feedback`
+- [ ] **T09 · Button squash physics** — pointerdown → GSAP scale(0.94)/skew, spring back on release; pair with T01 tick. `◽` `S` `Feedback`
+- [ ] **T10 · Heading decode-on-reveal** — reusable text-scramble util; headings decrypt char-by-char as they enter view. `⚡` `M` `Novelty`
+- [ ] **T11 · Section "scan" transitions** — View Transitions API (fallback: GLSL scanline sweep) when jumping between anchors. `⚡` `M` `Novelty`
+- [ ] **T12 · Scroll-velocity reactive post-fx** — map scroll speed → bloom strength + a touch of chromatic aberration in the hero composer. Fast scroll feels *fast*. `⚡` `M` `Feedback`
 
-### Progress / return
-- **Scroll-progress scan line** + "sections discovered" ticks up the side. `⚡` `S` `Progress`
-- **"Explored 100%" achievement toast** when they reach the footer. `⚡` `M` `Reward`
-- **Remember return visitors** — "Welcome back" + restore scroll depth; eyes greet them. `◽` `M` `Reward`
+### Play / interactive 3D
+- [ ] **T13 · Draggable garment** — drag to spin the DesignIO gown (pointer delta → `rotation.y`) with inertia + snap-back; disables scroll-scrub while dragging. `🔥` `M` `Play`
+- [ ] **T14 · Fabric/color swatcher** — swatch row re-drapes the gown live (swap `MeshStandardMaterial` color/roughness/sheen) with a material-morph tween + sound. `🔥` `M` `Play`
+- [ ] **T15 · Eyes "look where you click"** — global click → eyes saccade to the point (fast lerp + overshoot) + sonar ping ring + T01 whoosh. `⚡` `S` `Feedback`
+- [ ] **T16 · Pointer force-field particles** — hero particle field repels/attracts around the cursor (add pointer uniform + force in `particles.vert`). `⚡` `M` `Play`
+- [ ] **T17 · Gyro parallax (mobile)** — `DeviceOrientationEvent` (with iOS permission prompt) tilts eyes + particles + camera. `⚡` `M` `Play`
+- [ ] **T18 · "Calibrate your optics" toy** — two draggable sliders that focus/converge the eyes; hitting "locked" pays out a chime + unlock. `◽` `M` `Play`
 
-### Novelty (fresh every visit)
-- **Randomized eye mood/color** per visit (cyan / violet / amber) — no two loads identical. `⚡` `S` `Novelty`
-- **Day/night state** — by local time the eyes "sleep" (half-lidded, dim) or are wide awake. `◽` `M` `Novelty`
-- **Gyroscope parallax on mobile** — tilt the phone, the eyes + particles shift. `⚡` `M` `Play`
+### Novelty / personalization (fresh every visit)
+- [ ] **T19 · Randomized eye palette per visit** — seeded pick (cyan/violet/amber/crimson) applied to iris + glow uniforms; persist per session. `⚡` `S` `Novelty`
+- [ ] **T20 · Day/night optics** — by local time the eyes go half-lidded + dim + slower ambient at night, wide + bright by day. `◽` `M` `Novelty`
+- [ ] **T21 · Generative visitor "sigil"** — procedural emblem seeded by a random visitor id (shown in a corner HUD chip); becomes the share artifact in T28. `⚡` `M` `Novelty`
+- [ ] **T22 · Idle "the site notices you left"** — after ~20s idle the eyes drift, search, then "spot" you again on the next move. `◽` `S` `Novelty`
 
-### Social proof / loop
-- **"◉ N designers exploring now"** live-ish presence counter (real via a tiny KV, not faked). `⚡` `M` `FOMO`
-- **Shareable OG per view** — "Share your calibration" generates a custom eye-banner image. `◽` `L` `Discovery`
+### Progress / return loop
+- [ ] **T23 · Trophy system + panel** — small toasts for milestones (found a secret, dressed the gown, calibrated); a hidden trophies drawer, persisted. `⚡` `M` `Reward`
+- [ ] **T24 · Return-visitor greeting** — `localStorage` "welcome back," restore last scroll depth, eyes greet with a blink + chime. `◽` `M` `Reward`
+- [ ] **T25 · Visit streak** — track visit dates; "3-day streak → unlock a hidden colorway." `◽` `M` `FOMO`
 
-### Craft / must-not-break
-- **Perf budget guardrail** — profile FPS; engagement dies the instant it janks. `🔥` `M` `—`
-- **Reduced-motion calm mode** — a tasteful low-motion variant of every effect above (not just "off"). `🔥` `M` `—`
-- **Mobile-first pass** — touch equivalents for every hover/magnetic effect. `⚡` `M` `—`
+### Discovery / ARG (the shareable, "more-than-SV" layer)
+- [ ] **T26 · Konami → INTRUDER mode** — code (or triple-click an eye) flips eyes red, glitches the HUD, reveals a hidden garment + trophy. Screenshot bait. `⚡` `M` `Discovery`
+- [ ] **T27 · Backtick terminal** — press `` ` `` to open a fake HUD console: `help`, `about`, `unlock`, `matrix`, `sudo forge`. Commands trigger effects/easter eggs. `⚡` `M` `Discovery`
+- [ ] **T28 · Shareable generated card** — render the visitor's current eye/sigil state to a canvas → downloadable/shareable "MY CALIBRATION" image with the URL baked in. Built-in virality. `⚡` `L` `Discovery`
+- [ ] **T29 · Multi-step easter-egg hunt** — 3 hidden triggers across sections; finding all opens a secret "VAULT" 3D scene + a real reward (early-access code). `⚡` `L` `Discovery`
+
+### Social / craft
+- [ ] **T30 · Live presence counter** — "◉ **N** exploring now" via Vercel KV + a 15s heartbeat serverless route; real concurrency, never faked. `⚡` `M` `Social`
 
 ---
 
-## Suggested first sprint
-1. Click/hover micro-bursts + haptics (`S`, instant win)
-2. Sound design + mute toggle (`M`, biggest immersion jump)
-3. Live waitlist + position counter (`M`, captures leads while it hooks)
-4. Boot "system online" intro (`M`, sets the tone on load)
+## Recommended Sprint 1 (ship together)
+**T01 + T02 + T05 + T06 + T03 + T04.** Audio + tactile feedback compound (T01/T02), progress + achievement give the loop a spine (T05/T06), the boot sequence sets the tone (T03), and the waitlist (T04) turns all that dopamine into captured leads. Then redeploy and watch session time climb.
 
-> Tip: ship #1 and #2 together — audio + tactile feedback compound. Then #3 gives the dopamine a *purpose* (get on the list).
+> North-star metric: **median session duration** and **scroll-to-footer rate**. If a feature doesn't move one of those (or shares/waitlist signups), cut it.
