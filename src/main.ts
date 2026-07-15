@@ -26,6 +26,7 @@ import { initAudio } from './core/audio';
 import { initBurst } from './core/burst';
 import { initProgress } from './core/progress';
 import { initAchievements } from './core/achievements';
+import { initPresence } from './core/presence';
 import { initHunt } from './core/hunt';
 import { initIntruder } from './core/intruder';
 import { initTerminal } from './core/terminal';
@@ -75,6 +76,7 @@ initAudio(); // T01 — UI sound engine (+ mute toggle, off by default)
 initBurst(); // T02 — click micro-bursts + haptics
 initProgress(); // T05 — scroll-progress rail
 initAchievements(); // T06 — "Explored 100%" + confetti
+initPresence(); // F5 — live "◉ N exploring now"
 
 // --- ARG layer ---
 initHunt(); // T29 — fragment tracker

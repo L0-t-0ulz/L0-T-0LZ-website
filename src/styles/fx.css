@@ -52,6 +52,52 @@
   }
 }
 
+/* --- F5 live presence readout --- */
+.presence-hud {
+  position: fixed;
+  top: 72px;
+  right: 20px;
+  z-index: 44;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.4em 0.85em;
+  font-size: 0.64rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  background: var(--glass);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  backdrop-filter: blur(10px);
+  opacity: 0;
+  transform: translateY(-6px);
+  transition:
+    opacity 0.5s var(--ease-out),
+    transform 0.5s var(--ease-out);
+}
+.presence-hud.is-in {
+  opacity: 1;
+  transform: none;
+}
+.presence-hud b {
+  color: var(--blue-bright);
+}
+.presence-hud__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #38f5a8;
+  box-shadow: 0 0 10px #38f5a8;
+  animation: pulse 2s var(--ease-in-out) infinite;
+}
+@media (max-width: 560px) {
+  .presence-hud {
+    top: 64px;
+    font-size: 0.58rem;
+  }
+}
+
 /* --- T05 scroll-progress rail --- */
 .fx-progress {
   position: fixed;
