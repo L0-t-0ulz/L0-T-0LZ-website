@@ -276,8 +276,8 @@ export class EyesScene implements Loopable {
       );
     }
 
-    // F3 warp bloom + F1 audio-reactive bloom.
-    this.bloom.intensity = this.bloomBase + scrollEnergy() * 0.8 + level * 0.9;
+    // F3 warp bloom + F1 audio-reactive bloom (kept modest so it never blows out).
+    this.bloom.intensity = this.bloomBase + scrollEnergy() * 0.35 + level * 0.5;
 
     this.composer.render(dt);
   }

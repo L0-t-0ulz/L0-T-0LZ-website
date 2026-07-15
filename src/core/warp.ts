@@ -41,7 +41,7 @@ export function initWarp(): void {
   );
 
   const tick = () => {
-    const target = Math.min(1, rawVel / 3); // ~3px/ms reads as "fast"
+    const target = Math.min(0.7, rawVel / 4); // capped so it stays subtle
     energy += (target - energy) * 0.12;
     rawVel *= 0.9;
     overlay.style.setProperty('--warp', energy.toFixed(3));
