@@ -1,0 +1,252 @@
+/* ============================================================
+   Sprint 1 engagement FX — boot, sound toggle, progress, toasts, bursts
+   ============================================================ */
+
+/* --- T02 burst canvas --- */
+.fx-burst {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+}
+
+/* --- T01 sound toggle --- */
+.fx-sound {
+  position: fixed;
+  left: 18px;
+  bottom: 18px;
+  z-index: 60;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.55em 0.95em;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text);
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 999px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+.fx-sound:hover {
+  color: var(--white);
+  border-color: var(--blue-bright);
+  box-shadow: var(--glow-blue-soft);
+}
+.fx-sound.is-on {
+  color: var(--blue-bright);
+  border-color: var(--blue-bright);
+  box-shadow: var(--glow-blue-soft);
+}
+@media (max-width: 560px) {
+  .fx-sound {
+    font-size: 0.62rem;
+    padding: 0.5em 0.8em;
+  }
+}
+
+/* --- T05 scroll-progress rail --- */
+.fx-progress {
+  position: fixed;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 45;
+  height: 42vh;
+  width: 3px;
+  border-radius: 3px;
+  background: rgba(108, 197, 255, 0.12);
+}
+.fx-progress__fill {
+  position: absolute;
+  inset: 0;
+  transform-origin: top center;
+  transform: scaleY(0);
+  background: linear-gradient(var(--cyan), var(--blue));
+  border-radius: 3px;
+  box-shadow: var(--glow-cyan);
+  transition: transform 0.12s linear;
+}
+.fx-progress__ticks {
+  position: absolute;
+  inset: 0;
+}
+.fx-progress__tick {
+  position: absolute;
+  left: 50%;
+  width: 9px;
+  height: 9px;
+  margin: -4.5px 0 0 -4.5px;
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  background: var(--bg);
+  transition:
+    background 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+.fx-progress__tick.is-passed {
+  background: var(--blue-bright);
+  border-color: var(--blue-bright);
+  box-shadow: var(--glow-cyan);
+}
+.fx-progress__pct {
+  position: absolute;
+  bottom: -1.7rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  color: var(--text-dim);
+}
+@media (max-width: 900px) {
+  .fx-progress {
+    display: none;
+  }
+}
+
+/* --- toasts --- */
+.fx-toasts {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 80;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  pointer-events: none;
+}
+.fx-toast {
+  display: flex;
+  gap: 0.85rem;
+  align-items: center;
+  padding: 0.9rem 1.1rem;
+  border-radius: 12px;
+  min-width: 240px;
+  max-width: 340px;
+  transform: translateX(120%);
+  opacity: 0;
+  transition:
+    transform 0.5s var(--ease-out),
+    opacity 0.5s var(--ease-out);
+}
+.fx-toast.is-in {
+  transform: none;
+  opacity: 1;
+}
+.fx-toast__icon {
+  font-size: 1.35rem;
+  line-height: 1;
+}
+.fx-toast__title {
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  color: var(--blue-bright);
+}
+.fx-toast__body {
+  font-size: 0.82rem;
+  color: var(--text);
+  margin-top: 0.15rem;
+}
+
+/* --- T03 boot overlay --- */
+html.booting {
+  overflow: hidden;
+}
+.fx-boot {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(60vw 60vh at 50% 40%, rgba(58, 160, 255, 0.08), transparent 70%),
+    var(--bg);
+  transition: opacity 0.55s var(--ease-out);
+}
+.fx-boot.is-done {
+  opacity: 0;
+  pointer-events: none;
+}
+.fx-boot__inner {
+  width: min(90vw, 420px);
+  text-align: center;
+}
+.fx-boot__eye {
+  font-family: var(--font-display);
+  font-size: 2.4rem;
+  letter-spacing: 0.3em;
+  color: var(--blue-bright);
+  text-shadow: var(--glow-cyan);
+  animation: boot-pulse 1.2s var(--ease-in-out) infinite;
+}
+@keyframes boot-pulse {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+.fx-boot__log {
+  margin: 1.4rem 0;
+  min-height: 7rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: var(--blue-bright);
+  text-align: left;
+}
+.fx-boot__log div {
+  opacity: 0.9;
+  animation: boot-line 0.3s var(--ease-out);
+}
+@keyframes boot-line {
+  from {
+    opacity: 0;
+    transform: translateX(-6px);
+  }
+}
+.fx-boot__bar {
+  height: 2px;
+  border-radius: 2px;
+  overflow: hidden;
+  background: rgba(108, 197, 255, 0.15);
+}
+.fx-boot__barfill {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, var(--cyan), var(--blue));
+  box-shadow: var(--glow-cyan);
+  animation: boot-bar 1.7s var(--ease-out) forwards;
+}
+@keyframes boot-bar {
+  to {
+    width: 100%;
+  }
+}
+.fx-boot__skip {
+  margin-top: 1.3rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  color: var(--text-dim);
+  background: none;
+  border: 1px solid var(--line);
+  padding: 0.5em 1.1em;
+  border-radius: 999px;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+.fx-boot__skip:hover {
+  color: var(--white);
+  border-color: var(--blue-bright);
+}

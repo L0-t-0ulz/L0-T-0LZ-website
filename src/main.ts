@@ -15,11 +15,17 @@ import './styles/tokens.css';
 import './styles/base.css';
 import './styles/hud.css';
 import './styles/sections.css';
+import './styles/fx.css';
 
 import { capabilities } from './core/capabilities';
 import { initScroll, ScrollTrigger } from './core/scroll';
 import { initCursor, initMagnetic } from './core/cursor';
 import { revealAll } from './core/reveal';
+import { initAudio } from './core/audio';
+import { initBurst } from './core/burst';
+import { initProgress } from './core/progress';
+import { initAchievements } from './core/achievements';
+import { initBoot } from './sections/boot';
 
 import { buildNav } from './sections/nav';
 import { buildHero } from './sections/hero';
@@ -32,6 +38,9 @@ import { buildFounder } from './sections/founder';
 import { buildFooter } from './sections/footer';
 
 const app = document.getElementById('app')!;
+
+// --- Boot intro (once per session) — shown over everything while we assemble ---
+initBoot();
 
 // --- Assemble the page ---
 document.body.prepend(buildNav());
@@ -54,6 +63,12 @@ initScroll();
 initCursor();
 initMagnetic();
 revealAll('.reveal');
+
+// --- Sprint 1 engagement FX ---
+initAudio(); // T01 — UI sound engine (+ mute toggle, off by default)
+initBurst(); // T02 — click micro-bursts + haptics
+initProgress(); // T05 — scroll-progress rail
+initAchievements(); // T06 — "Explored 100%" + confetti
 
 // --- Lazy 3D after first paint ---
 const idle = (cb: () => void) => {
