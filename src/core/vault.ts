@@ -5,6 +5,7 @@
    ============================================================ */
 import { confetti } from './burst';
 import { audio } from './audio';
+import { shareCalibration } from './calibration';
 
 const CODE_KEY = 'lostsoulz:vaultcode';
 let isOpen = false;
@@ -54,7 +55,10 @@ export function openVault(): void {
         <code class="mono">${code}</code>
         <button class="vault__copy mono" type="button">Copy</button>
       </div>
-      <button class="vault__close btn btn--ghost" type="button">Close</button>
+      <div class="vault__actions">
+        <button class="vault__share btn btn--primary" type="button">✦ Share my calibration</button>
+        <button class="vault__close btn btn--ghost" type="button">Close</button>
+      </div>
     </div>`;
   document.body.appendChild(overlay);
   requestAnimationFrame(() => overlay.classList.add('is-in'));
@@ -76,6 +80,7 @@ export function openVault(): void {
     window.setTimeout(() => overlay.remove(), 500);
     isOpen = false;
   };
+  overlay.querySelector('.vault__share')?.addEventListener('click', () => void shareCalibration());
   overlay.querySelector('.vault__close')?.addEventListener('click', close);
   overlay.addEventListener('click', (e) => {
     if (e.target === overlay) close();
