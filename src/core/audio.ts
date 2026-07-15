@@ -14,6 +14,13 @@ let master: GainNode | null = null;
 let muted = true;
 let toggleEl: HTMLButtonElement | null = null;
 
+// F1 — analyser (audio-reactive visuals) + ambient pad
+let analyser: AnalyserNode | null = null;
+let analyserData: Uint8Array<ArrayBuffer> | null = null;
+let padGain: GainNode | null = null;
+let padBuilt = false;
+let level = 0; // smoothed 0..1 output level
+
 function ensureCtx(): void {
   if (ctx) return;
   const AC = window.AudioContext ?? (window as WebkitWindow).webkitAudioContext;
@@ -21,7 +28,66 @@ function ensureCtx(): void {
   ctx = new AC();
   master = ctx.createGain();
   master.gain.value = 0.42;
-  master.connect(ctx.destination);
+  analyser = ctx.createAnalyser();
+  analyser.fftSize = 256;
+  analyserData = new Uint8Array(new ArrayBuffer(analyser.fftSize));
+  master.connect(analyser);
+  analyser.connect(ctx.destination);
+  buildPad();
+}
+
+/** A soft evolving drone through a slow-swept lowpass — the site's ambient. */
+function buildPad(): void {
+  if (!ctx || !master || padBuilt) return;
+  padBuilt = true;
+  const filter = ctx.createBiquadFilter();
+  filter.type = 'lowpass';
+  filter.frequency.value = 520;
+  filter.Q.value = 6;
+  padGain = ctx.createGain();
+  padGain.gain.value = 0;
+  filter.connect(padGain).connect(master);
+
+  [82.41, 110.0, 164.81].forEach((f, i) => {
+    const osc = ctx!.createOscillator();
+    osc.type = 'sawtooth';
+    osc.frequency.value = f;
+    osc.detune.value = (i - 1) * 6;
+    const g = ctx!.createGain();
+    g.gain.value = 0.1;
+    osc.connect(g).connect(filter);
+    osc.start();
+  });
+
+  const lfo = ctx.createOscillator();
+  lfo.frequency.value = 0.06;
+  const lfoGain = ctx.createGain();
+  lfoGain.gain.value = 260;
+  lfo.connect(lfoGain).connect(filter.frequency);
+  lfo.start();
+}
+
+function rampPad(to: number): void {
+  if (!ctx || !padGain) return;
+  padGain.gain.cancelScheduledValues(ctx.currentTime);
+  padGain.gain.setTargetAtTime(to, ctx.currentTime, 1.5);
+}
+
+/** Smoothed 0..1 output level for audio-reactive visuals (decays when muted). */
+export function audioLevel(): number {
+  if (!analyser || !analyserData || muted) {
+    level *= 0.9;
+    return level;
+  }
+  analyser.getByteTimeDomainData(analyserData);
+  let sum = 0;
+  for (let i = 0; i < analyserData.length; i++) {
+    const v = (analyserData[i] - 128) / 128;
+    sum += v * v;
+  }
+  const norm = Math.min(1, Math.sqrt(sum / analyserData.length) * 3.5);
+  level += (norm - level) * 0.25;
+  return level;
 }
 
 /** One short enveloped tone. */
@@ -87,7 +153,10 @@ function toggle(): void {
   if (!next) {
     ensureCtx();
     void ctx?.resume();
+    rampPad(0.05); // fade the ambient pad in
     click(); // confirmation blip
+  } else {
+    rampPad(0); // fade the ambient pad out
   }
 }
 
