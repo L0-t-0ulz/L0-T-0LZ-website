@@ -307,9 +307,15 @@
 .designio__specs .v {
   color: var(--text);
 }
-.designio__stage {
+.designio__viz {
   position: sticky;
   top: 12vh;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+.designio__stage {
+  position: relative;
   aspect-ratio: 4 / 5;
   border-radius: var(--radius);
   overflow: hidden;
@@ -358,14 +364,65 @@
   color: var(--blue-bright);
   font-weight: 500;
 }
+/* T14 — fabric swatches */
+.designio__swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.swatch {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.4em 0.7em 0.4em 0.5em;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(10, 16, 26, 0.5);
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease;
+}
+.swatch__chip {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: var(--c);
+  box-shadow: 0 0 10px -1px var(--c);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+.swatch__name {
+  font-size: 0.66rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  transition: color 0.25s ease;
+}
+.swatch:hover {
+  border-color: var(--glass-border);
+}
+.swatch:hover .swatch__name {
+  color: var(--text);
+}
+.swatch.is-active {
+  border-color: var(--blue-bright);
+  box-shadow: var(--glow-blue-soft);
+  background: rgba(58, 160, 255, 0.1);
+}
+.swatch.is-active .swatch__name {
+  color: var(--white);
+}
+
 @media (max-width: 900px) {
   .designio__grid {
     grid-template-columns: 1fr;
   }
-  .designio__stage {
+  .designio__viz {
     position: relative;
     top: 0;
     order: -1;
+  }
+  .designio__stage {
     aspect-ratio: 5 / 4;
   }
 }

@@ -137,3 +137,22 @@ export const navLinks = [
   { label: 'Founder', href: '#founder' },
   { label: 'Contact', href: '#contact' },
 ];
+
+// T14 — swatchable fabrics; each drives the live garment material.
+export interface Fabric {
+  name: string;
+  hex: string;
+  roughness: number;
+  metalness: number;
+  sheen: number;
+  clearcoat: number;
+}
+
+export const fabrics: Fabric[] = [
+  { name: 'Indigo Denim', hex: '#2b3a67', roughness: 0.85, metalness: 0.0, sheen: 0.15, clearcoat: 0.0 },
+  { name: 'Cyan Silk', hex: '#7df9ff', roughness: 0.22, metalness: 0.05, sheen: 1.0, clearcoat: 0.25 },
+  { name: 'Onyx Leather', hex: '#15171d', roughness: 0.5, metalness: 0.05, sheen: 0.25, clearcoat: 0.5 },
+  { name: 'Violet Satin', hex: '#b46cff', roughness: 0.28, metalness: 0.15, sheen: 0.85, clearcoat: 0.3 },
+  { name: 'Chrome Tech', hex: '#9aa7bd', roughness: 0.3, metalness: 0.85, sheen: 0.1, clearcoat: 0.15 },
+  { name: 'Crimson Vinyl', hex: '#ff4d6d', roughness: 0.12, metalness: 0.1, sheen: 0.3, clearcoat: 0.95 },
+];

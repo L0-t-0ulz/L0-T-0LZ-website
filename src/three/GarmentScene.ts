@@ -1,10 +1,14 @@
 /* ============================================================
    DesignIO stage — a procedural gown that reveals wireframe -> shaded,
-   rotates with scroll, and is drag-to-spin (T13).
+   rotates with scroll, is drag-to-spin (T13), and re-drapes into
+   different fabrics on the fly (T14).
    ============================================================ */
 import * as THREE from 'three';
 import { createRenderer, type Loopable } from '../core/renderer';
 import { capabilities } from '../core/capabilities';
+import { fabrics, type Fabric } from '../data/content';
+
+const WHITE = new THREE.Color('#ffffff');
 
 export class GarmentScene implements Loopable {
   private container: HTMLElement;
@@ -14,7 +18,7 @@ export class GarmentScene implements Loopable {
   private garment = new THREE.Group();
   private shaded: THREE.Mesh;
   private wire: THREE.LineSegments;
-  private shadedMat: THREE.MeshStandardMaterial;
+  private shadedMat: THREE.MeshPhysicalMaterial;
   private wireMat: THREE.LineBasicMaterial;
 
   private progress = 0; // 0..1 from ScrollTrigger
@@ -28,6 +32,15 @@ export class GarmentScene implements Loopable {
   private userTilt = 0; // X offset from drag (snaps back to neutral)
   private vel = 0; // angular velocity for inertia
   private idle = 0; // idle auto-spin accumulator (pauses while interacting)
+
+  // --- T14 fabric morph targets ---
+  private colorTarget = new THREE.Color();
+  private emissiveTarget = new THREE.Color();
+  private sheenColorTarget = new THREE.Color();
+  private roughTarget = 0.5;
+  private metalTarget = 0.1;
+  private sheenTarget = 0.2;
+  private clearcoatTarget = 0.2;
 
   constructor(container: HTMLElement) {
     this.container = container;
@@ -56,16 +69,22 @@ export class GarmentScene implements Loopable {
     const geo = new THREE.LatheGeometry(profile, capabilities.lowPower ? 40 : 72);
     geo.computeVertexNormals();
 
-    this.shadedMat = new THREE.MeshStandardMaterial({
-      color: new THREE.Color('#16233d'),
-      roughness: 0.55,
-      metalness: 0.15,
-      emissive: new THREE.Color('#0a1830'),
+    const f0 = fabrics[0];
+    this.shadedMat = new THREE.MeshPhysicalMaterial({
+      color: new THREE.Color(f0.hex),
+      roughness: f0.roughness,
+      metalness: f0.metalness,
+      sheen: f0.sheen,
+      sheenColor: new THREE.Color(f0.hex).lerp(WHITE, 0.5),
+      clearcoat: f0.clearcoat,
+      clearcoatRoughness: 0.3,
+      emissive: new THREE.Color(f0.hex).multiplyScalar(0.12),
       emissiveIntensity: 0.6,
       transparent: true,
       opacity: 0,
       side: THREE.DoubleSide,
     });
+    this.setFabric(f0); // seed morph targets = initial (no jump)
     this.shaded = new THREE.Mesh(geo, this.shadedMat);
 
     this.wireMat = new THREE.LineBasicMaterial({
@@ -97,8 +116,11 @@ export class GarmentScene implements Loopable {
     window.addEventListener('pointermove', this.onMove);
     window.addEventListener('pointerup', this.onUp);
     window.addEventListener('pointercancel', this.onUp);
+    // --- swatch events from the DesignIO section (T14) ---
+    document.addEventListener('lz:fabric', this.onFabric as EventListener);
   }
 
+  // ---- T13 drag ----
   private onDown = (e: PointerEvent): void => {
     this.dragging = true;
     this.lastX = e.clientX;
@@ -125,6 +147,22 @@ export class GarmentScene implements Loopable {
     this.container.classList.remove('is-grabbing');
   };
 
+  // ---- T14 fabric ----
+  private onFabric = (e: CustomEvent<number>): void => {
+    const f = fabrics[e.detail];
+    if (f) this.setFabric(f);
+  };
+
+  setFabric(f: Fabric): void {
+    this.colorTarget.set(f.hex);
+    this.emissiveTarget.set(f.hex).multiplyScalar(0.12);
+    this.sheenColorTarget.set(f.hex).lerp(WHITE, 0.5);
+    this.roughTarget = f.roughness;
+    this.metalTarget = f.metalness;
+    this.sheenTarget = f.sheen;
+    this.clearcoatTarget = f.clearcoat;
+  }
+
   /** 0..1 scroll progress through the DesignIO section. */
   setProgress(p: number): void {
     this.progress = THREE.MathUtils.clamp(p, 0, 1);
@@ -138,6 +176,17 @@ export class GarmentScene implements Loopable {
     this.reveal += (targetReveal - this.reveal) * Math.min(1, dt * 4);
     this.shadedMat.opacity = this.reveal;
     this.wireMat.opacity = 0.9 * (1 - this.reveal * 0.82);
+
+    // --- T14: ease the material toward the selected fabric ---
+    const mk = Math.min(1, dt * 5);
+    const m = this.shadedMat;
+    m.color.lerp(this.colorTarget, mk);
+    m.emissive.lerp(this.emissiveTarget, mk);
+    m.sheenColor.lerp(this.sheenColorTarget, mk);
+    m.roughness += (this.roughTarget - m.roughness) * mk;
+    m.metalness += (this.metalTarget - m.metalness) * mk;
+    m.sheen += (this.sheenTarget - m.sheen) * mk;
+    m.clearcoat += (this.clearcoatTarget - m.clearcoat) * mk;
 
     // --- T13: drag inertia (Y) + snap-back (X); idle spin pauses while
     //     interacting and resumes only once the fling has settled. ---
@@ -168,6 +217,7 @@ export class GarmentScene implements Loopable {
     window.removeEventListener('pointermove', this.onMove);
     window.removeEventListener('pointerup', this.onUp);
     window.removeEventListener('pointercancel', this.onUp);
+    document.removeEventListener('lz:fabric', this.onFabric as EventListener);
     this.renderer.dispose();
     this.shaded.geometry.dispose();
     this.shadedMat.dispose();

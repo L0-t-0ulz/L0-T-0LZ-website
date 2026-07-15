@@ -38,8 +38,8 @@ _(pull from Next Up →)_
 - [ ] **T12 · Scroll-velocity reactive post-fx** — map scroll speed → bloom strength + a touch of chromatic aberration in the hero composer. Fast scroll feels *fast*. `⚡` `M` `Feedback`
 
 ### Play / interactive 3D
-- [ ] **T13 · Draggable garment** — drag to spin the DesignIO gown (pointer delta → `rotation.y`) with inertia + snap-back; disables scroll-scrub while dragging. `🔥` `M` `Play`
-- [ ] **T14 · Fabric/color swatcher** — swatch row re-drapes the gown live (swap `MeshStandardMaterial` color/roughness/sheen) with a material-morph tween + sound. `🔥` `M` `Play`
+- [x] **T13 · Draggable garment** ✅ live — drag to spin the DesignIO gown (pointer delta → `rotation.y`) with inertia + snap-back; disables scroll-scrub while dragging. `🔥` `M` `Play`
+- [x] **T14 · Fabric/color swatcher** ✅ live — swatch row re-drapes the gown live (swap `MeshStandardMaterial` color/roughness/sheen) with a material-morph tween + sound. `🔥` `M` `Play`
 - [ ] **T15 · Eyes "look where you click"** — global click → eyes saccade to the point (fast lerp + overshoot) + sonar ping ring + T01 whoosh. `⚡` `S` `Feedback`
 - [ ] **T16 · Pointer force-field particles** — hero particle field repels/attracts around the cursor (add pointer uniform + force in `particles.vert`). `⚡` `M` `Play`
 - [ ] **T17 · Gyro parallax (mobile)** — `DeviceOrientationEvent` (with iOS permission prompt) tilts eyes + particles + camera. `⚡` `M` `Play`
