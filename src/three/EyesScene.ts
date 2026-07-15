@@ -7,6 +7,7 @@ import { createRenderer, type Loopable } from '../core/renderer';
 import { capabilities } from '../core/capabilities';
 import { getMood } from '../core/intruder';
 import { scrollEnergy } from '../core/warp';
+import { audioLevel } from '../core/audio';
 import irisVert from './shaders/iris.vert?raw';
 import irisFrag from './shaders/iris.frag?raw';
 import glowFrag from './shaders/glow.frag?raw';
@@ -232,6 +233,9 @@ export class EyesScene implements Loopable {
       }
     }
 
+    // F1 — audio-reactive: the eyes breathe to the sound level.
+    const level = audioLevel();
+
     for (const eye of this.eyes) {
       // per-eye convergence toward the cursor hit point
       const dx = this.hit.x - eye.worldX * this.group.scale.x;
@@ -243,6 +247,7 @@ export class EyesScene implements Loopable {
       eye.pupil.lerp(eye.target, 1 - Math.pow(0.0015, dt));
       eye.irisMat.uniforms.uPupil.value.copy(eye.pupil);
       eye.irisMat.uniforms.uTime.value = elapsed;
+      eye.irisMat.uniforms.uIntensity.value = 1 + level * 0.7;
       eye.glowMat.uniforms.uTime.value = elapsed;
       eye.group.scale.y = this.blink;
     }
@@ -253,14 +258,15 @@ export class EyesScene implements Loopable {
     this.group.rotation.x = -this.smoothParallax.y * 0.08;
     if (this.particleMat) {
       this.particleMat.uniforms.uTime.value = elapsed;
+      this.particleMat.uniforms.uSize.value = 26 + level * 22;
       this.particleMat.uniforms.uParallax.value.set(
         this.smoothParallax.x * 0.25,
         this.smoothParallax.y * 0.25
       );
     }
 
-    // F3 — bloom ramps with scroll energy (warp feel).
-    this.bloom.intensity = this.bloomBase + scrollEnergy() * 0.8;
+    // F3 warp bloom + F1 audio-reactive bloom.
+    this.bloom.intensity = this.bloomBase + scrollEnergy() * 0.8 + level * 0.9;
 
     this.composer.render(dt);
   }
