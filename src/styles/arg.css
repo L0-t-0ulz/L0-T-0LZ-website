@@ -291,6 +291,12 @@ html.intruder .nav__brand .glyph {
   border-color: var(--blue-bright);
   box-shadow: var(--glow-blue-soft);
 }
+.vault__actions {
+  display: flex;
+  gap: 0.7rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
 
 @media (prefers-reduced-motion: reduce) {
   .intruder-fx,

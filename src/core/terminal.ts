@@ -7,6 +7,7 @@ import { confetti } from './burst';
 import { foundFragment, huntComplete, huntCount } from './hunt';
 import { triggerIntruder } from './intruder';
 import { openVault } from './vault';
+import { shareCalibration } from './calibration';
 
 let root: HTMLElement | null = null;
 let logEl: HTMLElement | null = null;
@@ -76,7 +77,7 @@ function handle(raw: string): void {
   switch (cmd) {
     case 'help':
       print(
-        'commands: <b>about</b> · <b>unlock</b> · <b>matrix</b> · <b>sudo forge</b> · <b>intruder</b> · <b>fragments</b> · <b>vault</b> · <b>whoami</b> · <b>clear</b> · <b>exit</b>'
+        'commands: <b>about</b> · <b>unlock</b> · <b>matrix</b> · <b>sudo forge</b> · <b>intruder</b> · <b>fragments</b> · <b>vault</b> · <b>share</b> · <b>whoami</b> · <b>clear</b> · <b>exit</b>'
       );
       break;
     case 'about':
@@ -116,6 +117,11 @@ function handle(raw: string): void {
           `<span style="color:#ff5b7a">access denied</span> — 3 fragments required (${huntCount()}/3).`
         );
       }
+      break;
+    case 'share':
+    case 'calibrate':
+      print('rendering your optic calibration…');
+      void shareCalibration();
       break;
     case 'clear':
       if (logEl) logEl.innerHTML = '';
