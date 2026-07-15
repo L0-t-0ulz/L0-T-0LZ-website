@@ -79,7 +79,7 @@ Way more futuristic, way more dopamine. Building straight down this list, shippi
 
 - [x] **F5 · Live "◉ N exploring now"** ✅ live — real concurrent-visitor count via `api/presence.ts` (node-redis, sorted-set heartbeat, 30s prune) + a pulsing HUD readout. Real social proof, never faked. `🔥` `M` `Social`
 - [x] **F2 · Comet cursor trail + target-lock reticle** ✅ live — additive particle trail behind the crosshair; over interactive elements it snaps into a rotating 4-corner "LOCK" bracket. `🔥` `S` `Feedback`
-- [ ] **F3 · Scroll-warp** — fast scroll ramps hero bloom + a chromatic-aberration/scanline overlay + per-section scan wipes. Scrolling feels like warping. `⚡` `M` `Feedback`
+- [x] **F3 · Scroll-warp** ✅ live — fast scroll ramps hero bloom + a chromatic-aberration/scanline overlay + per-section scan wipes. Scrolling feels like warping. `⚡` `M` `Feedback`
 - [ ] **F1 · Audio-reactive ambient + reactive eyes** — an evolving synth pad (when unmuted) + an AnalyserNode drives the eyes' bloom/pulse/particles. The site breathes to sound. `🔥` `M` `Feedback`
 - [ ] **F7 · Holographic depth** — mouse + gyro tilt-parallax on layered elements + a faint CRT scanline/RGB-fringe overlay. The page reads like a projected hologram. `⚡` `M` `Novelty`
 - [ ] **F4 · Idle ATTRACT MODE** — after ~18s idle, a self-playing arcade demo: wandering eyes, auto-spinning garment cycling fabrics, streaming telemetry. Any input exits. `⚡` `M` `Novelty`

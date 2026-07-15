@@ -6,6 +6,7 @@ import { EffectComposer, RenderPass, EffectPass, BloomEffect } from 'postprocess
 import { createRenderer, type Loopable } from '../core/renderer';
 import { capabilities } from '../core/capabilities';
 import { getMood } from '../core/intruder';
+import { scrollEnergy } from '../core/warp';
 import irisVert from './shaders/iris.vert?raw';
 import irisFrag from './shaders/iris.frag?raw';
 import glowFrag from './shaders/glow.frag?raw';
@@ -34,6 +35,8 @@ export class EyesScene implements Loopable {
   private scene = new THREE.Scene();
   private camera: THREE.PerspectiveCamera;
   private composer: EffectComposer;
+  private bloom!: BloomEffect;
+  private bloomBase = 1;
   private group = new THREE.Group();
   private eyes: Eye[] = [];
   private particles?: THREE.Points;
@@ -65,14 +68,15 @@ export class EyesScene implements Loopable {
     // Post-processing (skip heavy bloom on low-power devices).
     this.composer = new EffectComposer(this.renderer);
     this.composer.addPass(new RenderPass(this.scene, this.camera));
-    const bloom = new BloomEffect({
-      intensity: capabilities.lowPower ? 0.5 : 1.0,
+    this.bloomBase = capabilities.lowPower ? 0.5 : 1.0;
+    this.bloom = new BloomEffect({
+      intensity: this.bloomBase,
       luminanceThreshold: 0.55,
       luminanceSmoothing: 0.4,
       mipmapBlur: true,
       radius: 0.7,
     });
-    this.composer.addPass(new EffectPass(this.camera, bloom));
+    this.composer.addPass(new EffectPass(this.camera, this.bloom));
 
     window.addEventListener('pointermove', this.onPointer, { passive: true });
     document.addEventListener('lz:mood', this.onMood as EventListener);
@@ -254,6 +258,9 @@ export class EyesScene implements Loopable {
         this.smoothParallax.y * 0.25
       );
     }
+
+    // F3 — bloom ramps with scroll energy (warp feel).
+    this.bloom.intensity = this.bloomBase + scrollEnergy() * 0.8;
 
     this.composer.render(dt);
   }
