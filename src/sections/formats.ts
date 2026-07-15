@@ -6,13 +6,13 @@ export function buildFormats(): HTMLElement {
   // Duplicate the chip set so the marquee loops seamlessly (-50% translate).
   const track = formats.chips.map(chip).join('') + formats.chips.map(chip).join('');
 
-  const flow = formats.flow
-    .map(
-      (n, i) =>
-        `<span class="pipeflow__node reveal">${n}</span>` +
-        (i < formats.flow.length - 1 ? `<span class="pipeflow__arrow">──▸</span>` : '')
-    )
-    .join('');
+  // Pipeline flow as a marquee: nodes joined by arrows, with a trailing arrow
+  // so the loop reads continuously into the next copy. Duplicated for the -50%
+  // seamless loop; scrolls in reverse so it counter-moves against the chips.
+  const arrow = '<span class="pipeflow__arrow">──▸</span>';
+  const flowSeq =
+    formats.flow.map((n) => `<span class="pipeflow__node">${n}</span>`).join(arrow) + arrow;
+  const flowTrack = flowSeq + flowSeq;
 
   const section = h<HTMLElement>(`
     <section class="section formats" id="formats">
@@ -26,8 +26,8 @@ export function buildFormats(): HTMLElement {
       <div class="ticker" aria-hidden="true">
         <div class="ticker__track">${track}</div>
       </div>
-      <div class="container">
-        <div class="pipeflow">${flow}</div>
+      <div class="ticker ticker--flow" aria-hidden="true">
+        <div class="ticker__track ticker__track--rev">${flowTrack}</div>
       </div>
     </section>
   `);

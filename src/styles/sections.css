@@ -424,10 +424,21 @@
 }
 .ticker__track {
   display: inline-flex;
+  align-items: center;
   gap: 1.2rem;
   white-space: nowrap;
   will-change: transform;
   animation: marquee 26s linear infinite;
+}
+/* Pipeline row: counter-scrolls (reverse) at a slower pace than the chips. */
+.ticker--flow {
+  margin-top: 2.2rem;
+}
+.ticker--flow .ticker__track {
+  animation-duration: 34s;
+}
+.ticker__track--rev {
+  animation-direction: reverse;
 }
 .ticker:hover .ticker__track {
   animation-play-state: paused;
@@ -456,14 +467,6 @@
   border-radius: 50%;
   background: var(--blue-bright);
   box-shadow: var(--glow-cyan);
-}
-.pipeflow {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.6rem 0.4rem;
-  margin-top: 2.5rem;
-  justify-content: center;
 }
 .pipeflow__node {
   font-family: var(--font-mono);
