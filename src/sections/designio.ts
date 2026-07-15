@@ -35,6 +35,7 @@ export function buildDesignio(): HTMLElement {
 
           <div class="designio__stage framed" data-garment aria-hidden="true">
             <span class="designio__stage-label mono"><b>DESIGN·IO</b> // LIVE GARMENT</span>
+            <span class="designio__hint mono">⟲ drag to rotate</span>
           </div>
         </div>
       </div>

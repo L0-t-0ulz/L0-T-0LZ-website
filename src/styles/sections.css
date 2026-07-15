@@ -321,6 +321,27 @@
 .designio__stage canvas {
   width: 100% !important;
   height: 100% !important;
+  cursor: grab;
+  touch-action: none; /* T13: touch-drag rotates instead of scrolling */
+}
+.designio__stage.is-grabbing canvas {
+  cursor: grabbing;
+}
+.designio__hint {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 2;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+.designio__stage.is-grabbing .designio__hint {
+  opacity: 0;
 }
 .designio__stage-label {
   position: absolute;
