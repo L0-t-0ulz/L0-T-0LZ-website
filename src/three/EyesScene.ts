@@ -5,6 +5,7 @@ import * as THREE from 'three';
 import { EffectComposer, RenderPass, EffectPass, BloomEffect } from 'postprocessing';
 import { createRenderer, type Loopable } from '../core/renderer';
 import { capabilities } from '../core/capabilities';
+import { getMood } from '../core/intruder';
 import irisVert from './shaders/iris.vert?raw';
 import irisFrag from './shaders/iris.frag?raw';
 import glowFrag from './shaders/glow.frag?raw';
@@ -14,6 +15,10 @@ import particlesFrag from './shaders/particles.frag?raw';
 const BLUE = new THREE.Color('#3aa0ff');
 const CYAN = new THREE.Color('#7df9ff');
 const MAGENTA = new THREE.Color('#b46cff');
+
+// INTRUDER mode (T26) palette.
+const RED = new THREE.Color('#ff2d55');
+const RED_ACCENT = new THREE.Color('#ff7a3a');
 
 interface Eye {
   group: THREE.Group;
@@ -70,6 +75,28 @@ export class EyesScene implements Loopable {
     this.composer.addPass(new EffectPass(this.camera, bloom));
 
     window.addEventListener('pointermove', this.onPointer, { passive: true });
+    document.addEventListener('lz:mood', this.onMood as EventListener);
+    this.setMood(getMood()); // sync if intruder mode was already active
+  }
+
+  private onMood = (e: CustomEvent<{ mode: 'normal' | 'intruder' }>): void => {
+    this.setMood(e.detail.mode);
+  };
+
+  setMood(mode: 'normal' | 'intruder'): void {
+    const intruder = mode === 'intruder';
+    const color = intruder ? RED : BLUE;
+    const accent = intruder ? RED_ACCENT : CYAN;
+    const halo = intruder ? RED : MAGENTA;
+    for (const eye of this.eyes) {
+      (eye.irisMat.uniforms.uColor.value as THREE.Color).copy(color);
+      (eye.irisMat.uniforms.uAccent.value as THREE.Color).copy(accent);
+      (eye.glowMat.uniforms.uCore.value as THREE.Color).copy(color);
+      (eye.glowMat.uniforms.uHalo.value as THREE.Color).copy(halo);
+    }
+    if (this.particleMat) {
+      (this.particleMat.uniforms.uColor.value as THREE.Color).copy(intruder ? RED_ACCENT : CYAN);
+    }
   }
 
   private makeEye(worldX: number): Eye {
@@ -241,6 +268,7 @@ export class EyesScene implements Loopable {
 
   dispose(): void {
     window.removeEventListener('pointermove', this.onPointer);
+    document.removeEventListener('lz:mood', this.onMood as EventListener);
     this.composer.dispose();
     this.renderer.dispose();
     this.scene.traverse((o) => {

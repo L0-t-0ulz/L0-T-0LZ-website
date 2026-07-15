@@ -16,6 +16,7 @@ import './styles/base.css';
 import './styles/hud.css';
 import './styles/sections.css';
 import './styles/fx.css';
+import './styles/arg.css';
 
 import { capabilities } from './core/capabilities';
 import { initScroll, ScrollTrigger } from './core/scroll';
@@ -25,6 +26,9 @@ import { initAudio } from './core/audio';
 import { initBurst } from './core/burst';
 import { initProgress } from './core/progress';
 import { initAchievements } from './core/achievements';
+import { initHunt } from './core/hunt';
+import { initIntruder } from './core/intruder';
+import { initTerminal } from './core/terminal';
 import { initBoot } from './sections/boot';
 
 import { buildNav } from './sections/nav';
@@ -71,6 +75,11 @@ initAudio(); // T01 — UI sound engine (+ mute toggle, off by default)
 initBurst(); // T02 — click micro-bursts + haptics
 initProgress(); // T05 — scroll-progress rail
 initAchievements(); // T06 — "Explored 100%" + confetti
+
+// --- ARG layer ---
+initHunt(); // T29 — fragment tracker
+initIntruder(); // T26 — Konami / triple-click eyes → INTRUDER mode
+initTerminal(); // T27 — backtick console
 
 // --- Lazy 3D after first paint ---
 const idle = (cb: () => void) => {

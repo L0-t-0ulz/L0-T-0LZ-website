@@ -3,6 +3,7 @@ import { footer, brand } from '../data/content';
 import { eyesPair } from './eye-svg';
 import { reveal } from '../core/reveal';
 import { capabilities } from '../core/capabilities';
+import { foundFragment } from '../core/hunt';
 
 export function buildFooter(): HTMLElement {
   const section = h<HTMLElement>(`
@@ -26,8 +27,16 @@ export function buildFooter(): HTMLElement {
 
         <div class="footer__wordmark" aria-hidden="true">${brand.wordmark}</div>
       </div>
+      <button class="hunt-sigil" type="button" data-hunt-sigil aria-label="hidden signal">◈</button>
     </footer>
   `);
+
+  // T29 — hidden fragment: the barely-visible sigil tucked in the footer.
+  section.querySelector<HTMLButtonElement>('[data-hunt-sigil]')?.addEventListener('click', (e) => {
+    const el = e.currentTarget as HTMLButtonElement;
+    el.classList.add('is-found');
+    foundFragment('sigil');
+  });
 
   // Back-to-top
   section.querySelector<HTMLAnchorElement>('[data-scroll-top]')?.addEventListener('click', (e) => {

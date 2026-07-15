@@ -57,10 +57,10 @@ _(pull from Next Up →)_
 - [ ] **T25 · Visit streak** — track visit dates; "3-day streak → unlock a hidden colorway." `◽` `M` `FOMO`
 
 ### Discovery / ARG (the shareable, "more-than-SV" layer)
-- [ ] **T26 · Konami → INTRUDER mode** — code (or triple-click an eye) flips eyes red, glitches the HUD, reveals a hidden garment + trophy. Screenshot bait. `⚡` `M` `Discovery`
-- [ ] **T27 · Backtick terminal** — press `` ` `` to open a fake HUD console: `help`, `about`, `unlock`, `matrix`, `sudo forge`. Commands trigger effects/easter eggs. `⚡` `M` `Discovery`
+- [x] **T26 · Konami → INTRUDER mode** ✅ live — code (or triple-click an eye) flips eyes red, glitches the HUD, reveals a hidden garment + trophy. Screenshot bait. `⚡` `M` `Discovery`
+- [x] **T27 · Backtick terminal** ✅ live — press `` ` `` to open a fake HUD console: `help`, `about`, `unlock`, `matrix`, `sudo forge`. Commands trigger effects/easter eggs. `⚡` `M` `Discovery`
 - [ ] **T28 · Shareable generated card** — render the visitor's current eye/sigil state to a canvas → downloadable/shareable "MY CALIBRATION" image with the URL baked in. Built-in virality. `⚡` `L` `Discovery`
-- [ ] **T29 · Multi-step easter-egg hunt** — 3 hidden triggers across sections; finding all opens a secret "VAULT" 3D scene + a real reward (early-access code). `⚡` `L` `Discovery`
+- [x] **T29 · Multi-step easter-egg hunt** ✅ live — 3 hidden triggers across sections; finding all opens a secret "VAULT" 3D scene + a real reward (early-access code). `⚡` `L` `Discovery`
 
 ### Social / craft
 - [ ] **T30 · Live presence counter** — "◉ **N** exploring now" via Vercel KV + a 15s heartbeat serverless route; real concurrency, never faked. `⚡` `M` `Social`

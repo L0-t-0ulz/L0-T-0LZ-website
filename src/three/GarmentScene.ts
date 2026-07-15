@@ -10,6 +10,16 @@ import { fabrics, type Fabric } from '../data/content';
 
 const WHITE = new THREE.Color('#ffffff');
 
+// Hidden fabric shown only in INTRUDER mode (T26).
+const CLASSIFIED: Fabric = {
+  name: 'CLASSIFIED',
+  hex: '#ff2d55',
+  roughness: 0.3,
+  metalness: 0.2,
+  sheen: 0.5,
+  clearcoat: 0.6,
+};
+
 export class GarmentScene implements Loopable {
   private container: HTMLElement;
   private renderer: THREE.WebGLRenderer;
@@ -41,6 +51,7 @@ export class GarmentScene implements Loopable {
   private metalTarget = 0.1;
   private sheenTarget = 0.2;
   private clearcoatTarget = 0.2;
+  private lastFabric: Fabric = fabrics[0]; // remembered so INTRUDER can revert
 
   constructor(container: HTMLElement) {
     this.container = container;
@@ -116,8 +127,9 @@ export class GarmentScene implements Loopable {
     window.addEventListener('pointermove', this.onMove);
     window.addEventListener('pointerup', this.onUp);
     window.addEventListener('pointercancel', this.onUp);
-    // --- swatch events from the DesignIO section (T14) ---
+    // --- swatch events from the DesignIO section (T14) + mood (T26) ---
     document.addEventListener('lz:fabric', this.onFabric as EventListener);
+    document.addEventListener('lz:mood', this.onMood as EventListener);
   }
 
   // ---- T13 drag ----
@@ -150,7 +162,15 @@ export class GarmentScene implements Loopable {
   // ---- T14 fabric ----
   private onFabric = (e: CustomEvent<number>): void => {
     const f = fabrics[e.detail];
-    if (f) this.setFabric(f);
+    if (f) {
+      this.lastFabric = f;
+      this.setFabric(f);
+    }
+  };
+
+  // ---- T26 mood: INTRUDER swaps to the CLASSIFIED fabric, then reverts ----
+  private onMood = (e: CustomEvent<{ mode: 'normal' | 'intruder' }>): void => {
+    this.setFabric(e.detail.mode === 'intruder' ? CLASSIFIED : this.lastFabric);
   };
 
   setFabric(f: Fabric): void {
@@ -218,6 +238,7 @@ export class GarmentScene implements Loopable {
     window.removeEventListener('pointerup', this.onUp);
     window.removeEventListener('pointercancel', this.onUp);
     document.removeEventListener('lz:fabric', this.onFabric as EventListener);
+    document.removeEventListener('lz:mood', this.onMood as EventListener);
     this.renderer.dispose();
     this.shaded.geometry.dispose();
     this.shadedMat.dispose();

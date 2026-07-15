@@ -1,0 +1,302 @@
+/* ============================================================
+   ARG layer — INTRUDER mode (T26), terminal (T27), hunt + vault (T29)
+   ============================================================ */
+
+/* ---------- T26 INTRUDER mode ---------- */
+.intruder-fx {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  pointer-events: none;
+  box-shadow: inset 0 0 26vh rgba(255, 45, 85, 0.35);
+  background: radial-gradient(120vw 90vh at 50% 50%, transparent 55%, rgba(255, 45, 85, 0.12));
+  animation: intruder-pulse 1.6s var(--ease-in-out) infinite;
+}
+@keyframes intruder-pulse {
+  0%,
+  100% {
+    opacity: 0.75;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+.intruder-scan {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(255, 45, 85, 0.8), transparent);
+  animation: intruder-sweep 2.4s linear infinite;
+}
+@keyframes intruder-sweep {
+  from {
+    top: -2%;
+  }
+  to {
+    top: 102%;
+  }
+}
+.intruder-banner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+  padding: 0.6em 1em;
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #ffd2da;
+  background: rgba(255, 45, 85, 0.14);
+  border-bottom: 1px solid rgba(255, 45, 85, 0.5);
+  backdrop-filter: blur(6px);
+}
+.intruder-exit {
+  padding: 0.3em 0.8em;
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  color: #ffd2da;
+  border: 1px solid rgba(255, 45, 85, 0.6);
+  border-radius: 999px;
+}
+.intruder-exit:hover {
+  background: rgba(255, 45, 85, 0.2);
+}
+/* Tint the HUD chrome red + jitter the wordmark while compromised. */
+html.intruder .hud-frame {
+  filter: hue-rotate(158deg) saturate(1.5);
+}
+html.intruder .nav__brand {
+  animation: intruder-jitter 0.16s steps(2) infinite;
+  color: #ff8598;
+}
+html.intruder .nav__brand .glyph {
+  color: #ff2d55;
+  text-shadow: 0 0 12px #ff2d55;
+}
+@keyframes intruder-jitter {
+  0% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(-1px, 1px);
+  }
+  100% {
+    transform: translate(1px, -1px);
+  }
+}
+
+/* ---------- T27 Terminal ---------- */
+.terminal {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 95;
+  height: min(42vh, 340px);
+  display: flex;
+  flex-direction: column;
+  padding: 0.9rem 1.1rem 1rem;
+  background: rgba(5, 7, 13, 0.94);
+  border-top: 1px solid var(--glass-border);
+  backdrop-filter: blur(12px);
+  transform: translateY(101%);
+  transition: transform 0.4s var(--ease-out);
+  box-shadow: 0 -20px 60px -30px rgba(0, 0, 0, 0.9);
+}
+.terminal.is-open {
+  transform: translateY(0);
+}
+.terminal__log {
+  flex: 1;
+  overflow-y: auto;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  line-height: 1.7;
+  color: var(--text);
+}
+.terminal__line b {
+  color: var(--blue-bright);
+}
+.terminal__inputline {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  margin-top: 0.4rem;
+  border-top: 1px solid var(--line);
+  padding-top: 0.6rem;
+}
+.terminal__prompt {
+  color: var(--cyan);
+  font-family: var(--font-mono);
+}
+.terminal__input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--white);
+  font-size: 0.9rem;
+  caret-color: var(--cyan);
+}
+
+.matrix-fx {
+  position: fixed;
+  inset: 0;
+  z-index: 92;
+  pointer-events: none;
+  transition: opacity 0.6s ease;
+}
+
+/* ---------- T29 Hunt HUD + sigil ---------- */
+.hunt-hud {
+  position: fixed;
+  left: 18px;
+  bottom: 62px;
+  z-index: 60;
+  padding: 0.45em 0.85em;
+  font-size: 0.66rem;
+  letter-spacing: 0.16em;
+  color: var(--text-dim);
+  background: var(--glass);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  backdrop-filter: blur(10px);
+  cursor: default;
+}
+.hunt-hud b {
+  color: var(--blue-bright);
+}
+.hunt-hud.is-complete {
+  border-color: var(--blue-bright);
+  box-shadow: var(--glow-blue-soft);
+  cursor: pointer;
+}
+.hunt-hud.is-complete b {
+  color: var(--cyan);
+}
+
+.hunt-sigil {
+  position: absolute;
+  right: 14px;
+  bottom: 12px;
+  font-size: 0.9rem;
+  color: var(--blue-bright);
+  opacity: 0.06; /* hidden in plain sight */
+  transition:
+    opacity 0.3s ease,
+    text-shadow 0.3s ease,
+    transform 0.3s ease;
+}
+.hunt-sigil:hover {
+  opacity: 0.9;
+  text-shadow: var(--glow-cyan);
+  transform: scale(1.2);
+}
+.hunt-sigil.is-found {
+  opacity: 0.9;
+  color: var(--cyan);
+  text-shadow: var(--glow-cyan);
+}
+
+/* ---------- T29 Vault ---------- */
+.vault {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--gutter);
+  background: rgba(5, 7, 13, 0.86);
+  backdrop-filter: blur(8px);
+  opacity: 0;
+  transition: opacity 0.5s var(--ease-out);
+}
+.vault.is-in {
+  opacity: 1;
+}
+.vault__inner {
+  position: relative;
+  width: min(92vw, 480px);
+  padding: clamp(2rem, 5vw, 3rem);
+  text-align: center;
+  transform: translateY(16px) scale(0.98);
+  transition: transform 0.5s var(--ease-out);
+}
+.vault.is-in .vault__inner {
+  transform: none;
+}
+.vault__sigil {
+  width: 96px;
+  height: 96px;
+  margin: 0 auto 1.4rem;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, var(--cyan), var(--blue), var(--magenta), var(--cyan));
+  -webkit-mask: radial-gradient(transparent 38%, #000 41%);
+  mask: radial-gradient(transparent 38%, #000 41%);
+  filter: drop-shadow(0 0 16px rgba(58, 160, 255, 0.6));
+  animation: spin 6s linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.vault__kicker {
+  font-size: 0.7rem;
+  letter-spacing: 0.28em;
+  color: var(--blue-bright);
+}
+.vault__title {
+  font-size: clamp(2rem, 6vw, 3rem);
+  margin: 0.4rem 0 1rem;
+}
+.vault__body {
+  color: var(--text);
+  font-size: 0.95rem;
+  margin-bottom: 1.6rem;
+}
+.vault__code {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-bottom: 1.6rem;
+}
+.vault__code code {
+  padding: 0.6em 1em;
+  font-size: 1.05rem;
+  letter-spacing: 0.12em;
+  color: var(--cyan);
+  border: 1px dashed var(--glass-border);
+  border-radius: var(--radius-sm);
+  background: rgba(10, 16, 26, 0.6);
+}
+.vault__copy {
+  padding: 0.6em 1em;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--blue-bright);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+}
+.vault__copy:hover {
+  border-color: var(--blue-bright);
+  box-shadow: var(--glow-blue-soft);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intruder-fx,
+  .intruder-scan,
+  .vault__sigil,
+  html.intruder .nav__brand {
+    animation: none;
+  }
+}
