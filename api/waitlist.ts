@@ -56,6 +56,7 @@ export default async function handler(req: Req, res: Res): Promise<void> {
       body = {};
     }
   }
+
   const email = String((body as { email?: unknown })?.email ?? '')
     .trim()
     .toLowerCase();
