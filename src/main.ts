@@ -35,6 +35,7 @@ import { buildCapabilities } from './sections/capabilities';
 import { buildFormats } from './sections/formats';
 import { buildTech } from './sections/tech';
 import { buildFounder } from './sections/founder';
+import { buildWaitlist } from './sections/waitlist';
 import { buildFooter } from './sections/footer';
 
 const app = document.getElementById('app')!;
@@ -54,7 +55,8 @@ main.append(
   buildCapabilities(),
   buildFormats(),
   buildTech(),
-  buildFounder()
+  buildFounder(),
+  buildWaitlist()
 );
 app.append(main, buildFooter());
 

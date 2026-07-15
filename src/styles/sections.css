@@ -569,6 +569,65 @@
   margin-bottom: 2rem;
 }
 
+/* ---------- WAITLIST (T04) ---------- */
+.waitlist__card {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: clamp(2rem, 5vw, 3.2rem);
+  text-align: center;
+}
+.waitlist__title {
+  font-size: var(--fs-h2);
+  margin: 1rem 0 0.8rem;
+}
+.waitlist__lead {
+  color: var(--text);
+  margin-bottom: 2rem;
+}
+.waitlist__form {
+  display: flex;
+  gap: 0.7rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.waitlist__input {
+  flex: 1 1 260px;
+  min-width: 0;
+  padding: 0.85em 1.1em;
+  font-size: 0.95rem;
+  color: var(--white);
+  background: rgba(5, 7, 13, 0.6);
+  border: 1px solid var(--glass-border);
+  border-radius: 999px;
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+.waitlist__input::placeholder {
+  color: var(--text-dim);
+}
+.waitlist__input:focus {
+  outline: none;
+  border-color: var(--blue-bright);
+  box-shadow: var(--glow-blue-soft);
+}
+.waitlist__submit {
+  flex: 0 0 auto;
+}
+.waitlist__status {
+  min-height: 1.4rem;
+  margin-top: 1.2rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  color: var(--text-dim);
+}
+.waitlist__status[data-kind='ok'] {
+  color: var(--cyan);
+}
+.waitlist__status[data-kind='err'] {
+  color: #ff5b7a;
+}
+
 /* ---------- FOOTER ---------- */
 .footer {
   position: relative;
