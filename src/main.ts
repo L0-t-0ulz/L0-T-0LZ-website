@@ -17,6 +17,7 @@ import './styles/hud.css';
 import './styles/sections.css';
 import './styles/fx.css';
 import './styles/arg.css';
+import './styles/holo.css';
 
 import { capabilities } from './core/capabilities';
 import { initScroll, ScrollTrigger } from './core/scroll';
@@ -28,6 +29,7 @@ import { initBurst } from './core/burst';
 import { initProgress } from './core/progress';
 import { initAchievements } from './core/achievements';
 import { initPresence } from './core/presence';
+import { initWarp } from './core/warp';
 import { initHunt } from './core/hunt';
 import { initIntruder } from './core/intruder';
 import { initTerminal } from './core/terminal';
@@ -79,6 +81,7 @@ initBurst(); // T02 — click micro-bursts + haptics
 initProgress(); // T05 — scroll-progress rail
 initAchievements(); // T06 — "Explored 100%" + confetti
 initPresence(); // F5 — live "◉ N exploring now"
+initWarp(); // F3 — scroll-warp energy + overlay + section scans
 
 // --- ARG layer ---
 initHunt(); // T29 — fragment tracker

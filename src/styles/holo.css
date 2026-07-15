@@ -1,0 +1,67 @@
+/* ============================================================
+   Futuristic overlays — F3 scroll-warp (+ F7 holo depth added later)
+   ============================================================ */
+
+/* --- F3 scroll-warp overlay --- */
+.warp-fx {
+  position: fixed;
+  inset: 0;
+  z-index: 43;
+  pointer-events: none;
+  opacity: var(--warp, 0); /* driven per-frame by scroll energy */
+  background: repeating-linear-gradient(
+    180deg,
+    rgba(125, 249, 255, 0.06) 0 1px,
+    transparent 1px 3px
+  );
+  box-shadow:
+    inset 0 0 22vh rgba(58, 160, 255, 0.45),
+    inset 0 0 12vh rgba(180, 108, 255, 0.3);
+  mix-blend-mode: screen;
+  transition: opacity 0.1s linear;
+}
+.warp-fx__scan {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 140px;
+  background: linear-gradient(180deg, transparent, rgba(125, 249, 255, 0.1), transparent);
+  animation: warp-sweep 1.2s linear infinite;
+}
+@keyframes warp-sweep {
+  from {
+    top: -140px;
+  }
+  to {
+    top: 100%;
+  }
+}
+
+/* --- F3 per-section scan wipe (one-shot on enter; sits behind content) --- */
+.section.scan-in::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent, rgba(125, 249, 255, 0.14), transparent);
+  background-size: 100% 42%;
+  background-repeat: no-repeat;
+  animation: section-scan 0.75s var(--ease-out) forwards;
+}
+@keyframes section-scan {
+  from {
+    background-position: 0 -42%;
+  }
+  to {
+    background-position: 0 142%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .warp-fx,
+  .warp-fx__scan,
+  .section.scan-in::before {
+    display: none;
+    animation: none;
+  }
+}
