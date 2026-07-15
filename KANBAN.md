@@ -18,12 +18,12 @@ _(pull from Next Up →)_
 ---
 
 ## 🟨 Next Up — Sprint 1 (audio + touch + a reason to stay)
-- [ ] **T01 · Web Audio UI sound engine** — new `src/core/audio.ts`: a tiny synth (OscillatorNode + gain envelope) for hover blip, click tick, eye "whoosh," success chime. Master `GainNode`, `mute` persisted to `localStorage`, unlock on first pointerdown (autoplay policy). Wire into `cursor.ts` + buttons. `🔥` `M` `Feedback`
-- [ ] **T02 · Click micro-burst + haptics** — on pointerdown, spawn a short-lived Three.js `InstancedMesh` spark burst at the cursor (reuse the hero renderer / a lightweight overlay canvas) + `navigator.vibrate(8)` on touch. Every tap pays out. `🔥` `S` `Feedback`
-- [ ] **T03 · Boot / "OPTICS ONLINE" intro** — first-load HUD power-up (~1.6s): scanline wipe, mono readout "CALIBRATING OPTICS… ONLINE", eyes flicker awake, then content fades in. Skippable, once per session via `sessionStorage`. `⚡` `M` `Reward`
-- [ ] **T04 · Live waitlist + queue position** — email field → Vercel KV counter → "You're **#1,248** in line for DesignIO." Serverless route in `api/waitlist.ts`. Confetti on submit. Real number, real capture. `🔥` `M` `FOMO`
-- [ ] **T05 · Scroll-progress scan-line** — fixed side rail with a cyan fill + `%` readout + a tick that "locks" as each section passes (IntersectionObserver). Progress you can feel. `⚡` `S` `Progress`
-- [ ] **T06 · "Explored 100%" achievement + confetti** — reaching the footer fires a toast + particle burst; persists to `localStorage` so it only celebrates once. `⚡` `S` `Reward`
+- [x] **T01 · Web Audio UI sound engine** ✅ live — new `src/core/audio.ts`: a tiny synth (OscillatorNode + gain envelope) for hover blip, click tick, eye "whoosh," success chime. Master `GainNode`, `mute` persisted to `localStorage`, unlock on first pointerdown (autoplay policy). Wire into `cursor.ts` + buttons. `🔥` `M` `Feedback`
+- [x] **T02 · Click micro-burst + haptics** ✅ live — on pointerdown, spawn a short-lived Three.js `InstancedMesh` spark burst at the cursor (reuse the hero renderer / a lightweight overlay canvas) + `navigator.vibrate(8)` on touch. Every tap pays out. `🔥` `S` `Feedback`
+- [x] **T03 · Boot / "OPTICS ONLINE" intro** ✅ live — first-load HUD power-up (~1.6s): scanline wipe, mono readout "CALIBRATING OPTICS… ONLINE", eyes flicker awake, then content fades in. Skippable, once per session via `sessionStorage`. `⚡` `M` `Reward`
+- [ ] **T04 · Live waitlist + queue position** ⏭ *next — needs Vercel KV provisioned first* — email field → Vercel KV counter → "You're **#1,248** in line for DesignIO." Serverless route in `api/waitlist.ts`. Confetti on submit. Real number, real capture. `🔥` `M` `FOMO`
+- [x] **T05 · Scroll-progress scan-line** ✅ live — fixed side rail with a cyan fill + `%` readout + a tick that "locks" as each section passes (IntersectionObserver). Progress you can feel. `⚡` `S` `Progress`
+- [x] **T06 · "Explored 100%" achievement + confetti** ✅ live — reaching the footer fires a toast + particle burst; persists to `localStorage` so it only celebrates once. `⚡` `S` `Reward`
 
 ---
 
