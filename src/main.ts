@@ -31,6 +31,7 @@ import { initAchievements } from './core/achievements';
 import { initPresence } from './core/presence';
 import { initWarp } from './core/warp';
 import { initHolo } from './core/holo';
+import { initAttract } from './core/attract';
 import { initHunt } from './core/hunt';
 import { initIntruder } from './core/intruder';
 import { initTerminal } from './core/terminal';
@@ -84,6 +85,7 @@ initAchievements(); // T06 — "Explored 100%" + confetti
 initPresence(); // F5 — live "◉ N exploring now"
 initWarp(); // F3 — scroll-warp energy + overlay + section scans
 initHolo(); // F7 — holographic CRT overlay + tilt parallax
+initAttract(); // F4 — idle attract-mode cinematic
 
 // --- ARG layer ---
 initHunt(); // T29 — fragment tracker

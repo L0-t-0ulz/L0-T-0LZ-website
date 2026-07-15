@@ -52,6 +52,7 @@ export class GarmentScene implements Loopable {
   private sheenTarget = 0.2;
   private clearcoatTarget = 0.2;
   private lastFabric: Fabric = fabrics[0]; // remembered so INTRUDER can revert
+  private attract = false; // F4 — attract-mode fast spin
 
   constructor(container: HTMLElement) {
     this.container = container;
@@ -130,6 +131,7 @@ export class GarmentScene implements Loopable {
     // --- swatch events from the DesignIO section (T14) + mood (T26) ---
     document.addEventListener('lz:fabric', this.onFabric as EventListener);
     document.addEventListener('lz:mood', this.onMood as EventListener);
+    document.addEventListener('lz:attract', this.onAttract as EventListener);
   }
 
   // ---- T13 drag ----
@@ -171,6 +173,11 @@ export class GarmentScene implements Loopable {
   // ---- T26 mood: INTRUDER swaps to the CLASSIFIED fabric, then reverts ----
   private onMood = (e: CustomEvent<{ mode: 'normal' | 'intruder' }>): void => {
     this.setFabric(e.detail.mode === 'intruder' ? CLASSIFIED : this.lastFabric);
+  };
+
+  // ---- F4 attract: spin faster during the idle demo ----
+  private onAttract = (e: CustomEvent<{ on: boolean }>): void => {
+    this.attract = e.detail.on;
   };
 
   setFabric(f: Fabric): void {
@@ -218,7 +225,7 @@ export class GarmentScene implements Loopable {
       this.userTilt *= Math.pow(0.86, k); // ease tilt back to neutral
     }
     const idleActive = !this.dragging && this.vel === 0;
-    this.idle += (idleActive ? 0.25 : 0) * dt;
+    this.idle += (idleActive ? (this.attract ? 0.9 : 0.25) : 0) * dt;
 
     this.garment.rotation.y = this.progress * Math.PI * 1.4 + this.idle + this.userRot;
     this.garment.rotation.x = Math.sin(elapsed * 0.4) * 0.04 + this.userTilt;
@@ -239,6 +246,7 @@ export class GarmentScene implements Loopable {
     window.removeEventListener('pointercancel', this.onUp);
     document.removeEventListener('lz:fabric', this.onFabric as EventListener);
     document.removeEventListener('lz:mood', this.onMood as EventListener);
+    document.removeEventListener('lz:attract', this.onAttract as EventListener);
     this.renderer.dispose();
     this.shaded.geometry.dispose();
     this.shadedMat.dispose();
