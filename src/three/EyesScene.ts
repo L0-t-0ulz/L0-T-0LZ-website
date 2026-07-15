@@ -53,6 +53,7 @@ export class EyesScene implements Loopable {
   private blink = 1; // 1 open, 0 closed
   private blinking = false;
   private blinkT = 0;
+  private attract = false; // F4 — attract-mode wandering
 
   constructor(container: HTMLElement) {
     this.renderer = createRenderer(container);
@@ -81,11 +82,16 @@ export class EyesScene implements Loopable {
 
     window.addEventListener('pointermove', this.onPointer, { passive: true });
     document.addEventListener('lz:mood', this.onMood as EventListener);
+    document.addEventListener('lz:attract', this.onAttract as EventListener);
     this.setMood(getMood()); // sync if intruder mode was already active
   }
 
   private onMood = (e: CustomEvent<{ mode: 'normal' | 'intruder' }>): void => {
     this.setMood(e.detail.mode);
+  };
+
+  private onAttract = (e: CustomEvent<{ on: boolean }>): void => {
+    this.attract = e.detail.on;
   };
 
   setMood(mode: 'normal' | 'intruder'): void {
@@ -211,6 +217,11 @@ export class EyesScene implements Loopable {
   }
 
   update(dt: number, elapsed: number): void {
+    // F4 — in attract mode the eyes wander/search on a Lissajous path.
+    if (this.attract) {
+      this.mouse.set(Math.sin(elapsed * 0.6) * 0.85, Math.cos(elapsed * 0.43) * 0.7);
+    }
+
     // Cursor target on the z=0 plane.
     this.ray.setFromCamera(this.mouse, this.camera);
     this.ray.ray.intersectPlane(this.plane, this.hit);
@@ -282,6 +293,7 @@ export class EyesScene implements Loopable {
   dispose(): void {
     window.removeEventListener('pointermove', this.onPointer);
     document.removeEventListener('lz:mood', this.onMood as EventListener);
+    document.removeEventListener('lz:attract', this.onAttract as EventListener);
     this.composer.dispose();
     this.renderer.dispose();
     this.scene.traverse((o) => {

@@ -102,6 +102,41 @@
   will-change: transform;
 }
 
+/* --- F4 attract mode UI --- */
+.attract-tag {
+  position: fixed;
+  left: 50%;
+  bottom: 26px;
+  transform: translateX(-50%);
+  z-index: 46;
+  padding: 0.5em 1.1em;
+  font-size: 0.66rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--blue-bright);
+  border: 1px solid var(--glass-border);
+  border-radius: 999px;
+  background: var(--glass);
+  backdrop-filter: blur(10px);
+  animation: pulse 2s var(--ease-in-out) infinite;
+}
+.attract-telemetry {
+  position: fixed;
+  left: 20px;
+  top: 84px;
+  z-index: 46;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  line-height: 1.8;
+  color: var(--blue-bright);
+  pointer-events: none;
+  opacity: 0.85;
+}
+html.attract .warp-fx {
+  opacity: 0.14; /* faint ambient scan while the demo plays */
+}
+
 @media (prefers-reduced-motion: reduce) {
   .warp-fx,
   .warp-fx__scan,
